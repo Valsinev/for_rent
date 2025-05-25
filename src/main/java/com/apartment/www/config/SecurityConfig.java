@@ -19,6 +19,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final AppConfig appConfig;
+
+    public SecurityConfig(AppConfig appConfig) {
+        this.appConfig = appConfig;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -36,8 +42,8 @@ public class SecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.withUsername("admin")
-                .password("{noop}admin") // {noop} means "no encoding"
+        UserDetails user = User.withUsername(appConfig.getAdminUsername())
+                .password("{noop}" + appConfig.getAdminPassword()) // {noop} means "no encoding"
                 .roles("ADMIN")
                 .build();
 

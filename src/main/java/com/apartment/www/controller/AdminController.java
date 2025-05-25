@@ -1,5 +1,6 @@
 package com.apartment.www.controller;
 
+import com.apartment.www.entity.Reservation;
 import com.apartment.www.entity.ReservationRequest;
 import com.apartment.www.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,17 +53,16 @@ public class AdminController {
             return "redirect:/pricing";
         }
 
-        List<ReservationRequest> reservations = new ArrayList<>();
+        List<Reservation> reservations = new ArrayList<>();
         for (Integer day : days) {
             LocalDate date = LocalDate.of(year, month, day);
-            ReservationRequest req = new ReservationRequest();
-            req.setDate(date.toString());
-            req.setReserved(true);
+            Reservation req = new Reservation();
+            req.setDate(date);
             reservations.add(req);
         }
 
         // Here you would forward to your actual service/repository logic:
-        reservationService.updateReservation(reservations);
+        reservations.forEach(reservationService::save);
 
         // For demonstration: print to console or return summary
         System.out.println("Received reservations: " + reservations);
@@ -80,17 +80,16 @@ public class AdminController {
             return "redirect:/pricing";
         }
 
-        List<ReservationRequest> toRemove = new ArrayList<>();
+        List<Reservation> toRemove = new ArrayList<>();
         for (Integer day : days) {
             LocalDate date = LocalDate.of(year, month, day);
-            ReservationRequest req = new ReservationRequest();
-            req.setDate(date.toString());
-            req.setReserved(false); // Mark as unreserved
+            Reservation req = new Reservation();
+            req.setDate(date);
             toRemove.add(req);
         }
 
         // Here you would remove them from the actual data source
-        reservationService.updateReservation(toRemove);
+        toRemove.forEach(reservationService::remove);
         System.out.println("Removing reservations: " + toRemove);
         return "redirect:/pricing";
     }

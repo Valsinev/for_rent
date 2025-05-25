@@ -104,7 +104,7 @@
             <div class="container">
                 <div class="calendar row">
                     <div class="month col-lg-3 col-md-4 col-sm-6" th:each="entry : ${reservedGrouped}">
-                        <strong th:text="${entry.key.month.name()} + ' ' + ${entry.key.year}"></strong>
+                        <strong th:text="${#temporals.format(entry.key.atDay(1), 'MMMM yyyy', locale)}"></strong>
                         <br/>
 
                         <div class="day" th:each="day : ${#numbers.sequence(1, entry.key.lengthOfMonth())}"
