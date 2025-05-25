@@ -122,4 +122,12 @@ background-image: url("/images/background.png");
 }
 
 
-/////////////////
+/////////////////calendar
+
+.calendar { display: flex; flex-wrap: wrap; gap: 2rem;}
+.month { border: 1px solid #ccc; padding: 1rem; width: 250px; }
+.day { display: inline-block; width: 30px; height: 30px; text-align: center; margin: 2px; }
+.reserved { background-color: red; color: white; }
+
+
+////////
