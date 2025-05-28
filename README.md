@@ -40,6 +40,8 @@ Before running the application, set the following environment variables:
 | `DATABASE_PASSWORD`        | The password for the database                                   |                    |
 | `SPRING_SECURITY_USER`     | Hardcoded admin user that can access /admin endpoint and add/remove reservations  |                    |
 | `SPRING_SECURITY_PASSWORD` | Hardcoded password for the admin user                           |                    |
+| `OWNER_PHONE_NUMBER`       | Phone number for contacts to make reservations                  |                    |
+| `OWNER_EMAIL_ADDRESS`      | Email address for contacts                          |                    |
 
 💡 In IntelliJ, go to Run > Edit Configurations > Environment Variables to set these.
 

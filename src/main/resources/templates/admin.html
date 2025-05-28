@@ -32,19 +32,20 @@
             <ul class="navbar-nav align-items-center">
                 <li class="nav-item me-3 d-flex align-items-center text-white">
                     <i class="bi bi-telephone-fill me-2"></i>
-                    <span>088242422</span>
+                    <span th:text="${ownerPhone}">088242422</span>
                 </li>
                 <li class="nav-item d-flex align-items-center text-white">
                     <i class="bi bi-envelope-fill me-2"></i>
-                    <span>testmail@gmail.com</span>
+                    <span th:text="${ownerEmail}">testmail@gmail.com</span>
                 </li>
                 <li class="nav-item dropdown ms-3">
                     <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        🌐 BG
+                        🌐
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="?lang=bg">🇧🇬 Български</a></li>
                         <li><a class="dropdown-item" href="?lang=en">🇬🇧 English</a></li>
+                        <li><a class="dropdown-item" href="?lang=ru">🇷🇺 Русский</a></li>
                     </ul>
                 </li>
 
