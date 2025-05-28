@@ -107,31 +107,52 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-4">
-                                <img src="/images/ap1.jpg" class="equal-img" alt="...">
+                                <img src="/images/ap1.jpg" class="equal-img" alt="..." onclick="openModal(this.src)">
                             </div>
                             <div class="col-4 mt-2">
-                                <img src="/images/ap2.jpg" class="equal-img" alt="...">
+                                <img src="/images/ap2.jpg" class="equal-img" alt="..." onclick="openModal(this.src)">
                             </div>
                             <div class="col-4 mt-2">
-                                <img src="/images/ap3.jpg" class="equal-img" alt="...">
+                                <img src="/images/ap3.jpg" class="equal-img" alt="..." onclick="openModal(this.src)">
                             </div>
                             <div class="col-4 mt-2">
-                                <img src="/images/ap4.jpeg" class="equal-img" alt="...">
+                                <img src="/images/ap4.jpeg" class="equal-img" alt="..." onclick="openModal(this.src)">
                             </div>
                             <div class="col-4 mt-2">
-                                <img src="/images/ap5.jpeg" class="equal-img" alt="...">
+                                <img src="/images/ap5.jpeg" class="equal-img" alt="..." onclick="openModal(this.src)">
                             </div>
                             <div class="col-4 mt-2">
-                                <img src="/images/ap6.jpg" class="equal-img" alt="...">
+                                <img src="/images/ap6.jpg" class="equal-img" alt="..." onclick="openModal(this.src)">
                             </div>
                             <div class="col-4 mt-2">
-                                <img src="/images/atiya.jpg" class="equal-img" alt="...">
+                                <img src="/images/atiya.jpg" class="equal-img" alt="..." onclick="openModal(this.src)">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Image Modal -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content bg-transparent border-0">
+                    <div class="modal-body text-center p-0">
+                        <img id="modalImage" src="" class="img-fluid rounded" alt="Full Size Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openModal(src) {
+              document.getElementById('modalImage').src = src;
+              const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+              modal.show();
+            }
+        </script>
+
+
 
     </section>
 
