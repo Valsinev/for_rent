@@ -99,7 +99,7 @@
         <div class="row mb-5">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-            <a href="https://www.google.com/maps/dir//42.4397503,27.5822291/@42.4395177,27.5820601,19z/data=!4m2!4m1!3e0?hl=bg&entry=ttu&g_ep=EgoyMDI1MDUyMS4wIKXMDSoASAFQAw%3D%3D"
+            <a th:href="${googleMapsLink}"
                class="btn btn-primary mt-2" target="_blank">
                 <i class="bi bi-geo-alt-fill" th:text="#{navigate.with.google.maps}"></i>
             </a>
