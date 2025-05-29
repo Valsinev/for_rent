@@ -6,7 +6,8 @@ html, body {
 
 
 body {
-  background-image: url("/images/background.jpg");
+  background-image: url("/images/background.webp");
+  background-color:  #7caae4;
   background-size: cover;               /* or 100% 100%, if you prefer stretch */
   background-repeat: no-repeat;
   background-position: center center;
@@ -30,7 +31,7 @@ body {
             border-radius: 20px;
             overflow: hidden;
             color: #fff;
-            background-image: url("/images/card-background.jpg");
+            background-image: url("/images/card-background.webp");
             background-blend-mode: overlay;
             background-size: cover;
             background-repeat: no-repeat;
