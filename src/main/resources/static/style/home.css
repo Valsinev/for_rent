@@ -120,11 +120,13 @@ body {
 .day { display: inline-block; width: 30px; height: 30px; text-align: center; margin: 2px; background-color: green; border-radius: 122px; border: 1px solid black; color: white;}
 .reserved { background-color: red; border-radius: 122px; border: 1px solid black; text-align: center; color: white; }
 
-.btn { width:100%; margin-bottom: 1rem; background: rgba(0, 0, 0, 0.45); color: white; border: none; border-radius: 20px;}
+.btn { width:100%; margin-bottom: 1rem; background: rgba(0, 0, 0, 0.45); color: white; border: none; border-radius: 20px; }
 
-.btn:hover {  background-color: #212529; color: white;}
+.btn:hover {  background-color: #212529; color: white; }
 
-.selected { background: rgba(0, 0, 0, 0.75);}
+.selected { background: rgba(0, 0, 0, 0.75); }
+
+.img {border-radius: 12px;}
 
 
 
