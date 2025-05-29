@@ -124,4 +124,7 @@ body {
 
 .btn:hover {  background-color: #212529; color: white;}
 
+.selected { background: rgba(0, 0, 0, 0.75);}
+
+
 

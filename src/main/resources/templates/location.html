@@ -57,19 +57,19 @@
                     <a href="/" class="btn " aria-current="page" th:text="#{about}">About</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-2">
-                    <a href="/attractions" class="btn btn-outline-dark border-dark border-5" aria-current="page" th:text="#{attractions}">Attractions</a>
+                    <a href="/attractions" class="btn" aria-current="page" th:text="#{attractions}">Attractions</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-2">
-                    <a href="/services" class="btn btn-outline-dark border-dark border-5" aria-current="page" th:text="#{services}">Services</a>
+                    <a href="/services" class="btn" aria-current="page" th:text="#{services}">Services</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-2">
-                    <a href="/location" class="btn btn-outline-dark border-dark border-5" aria-current="page" th:text="#{location}">Location</a>
+                    <a href="/location" class="btn selected" aria-current="page" th:text="#{location}">Location</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-2">
-                    <a href="/pricing" class="btn btn-outline-dark border-dark border-5" aria-current="page" th:text="#{pricing.and.availability}">Pricing and Availability</a>
+                    <a href="/pricing" class="btn" aria-current="page" th:text="#{pricing.and.availability}">Pricing and Availability</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-2">
-                    <a href="/photos" class="btn btn-outline-dark border-dark border-5" aria-current="page" th:text="#{photos}">Photos</a>
+                    <a href="/photos" class="btn" aria-current="page" th:text="#{photos}">Photos</a>
                 </div>
             </div>
         </div>
@@ -93,11 +93,11 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row pt-4">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
             <a th:href="${googleMapsLink}"
-               class="btn btn-primary mt-2" target="_blank">
+               class="btn selected" target="_blank">
                 <i class="bi bi-geo-alt-fill" th:text="#{navigate.with.google.maps}"></i>
             </a>
 
