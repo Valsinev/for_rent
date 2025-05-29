@@ -55,14 +55,14 @@ body {
     }
 
     .card-title {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
         font-weight: 600;
-        color: #253b6b;
+        color: #000000;
     }
 
     .card-text {
-        font-size: 0.8rem;
-        color: black;
+        font-size: 1.1rem;
+        color: #000000;
     }
 
 
@@ -111,8 +111,8 @@ body {
 }
 
 .content-top .header .col a[aria-current="page"] {
-  background-color:  #7caae4;
-  color: #253b6b;
+  background-color:  #2b90df;
+  color: #cdb7a6;
   box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
 }
 
@@ -138,9 +138,9 @@ body {
 /////////////////calendar
 
 .calendar { display: flex; flex-wrap: wrap; gap: 2rem; }
-.month { padding: 1rem; width: 250px; color: 253b6b;}
+.month { padding: 1rem; width: 250px; color: #000000;}
 .day { display: inline-block; width: 30px; height: 30px; text-align: center; margin: 2px; }
-.reserved { background-color: red; color: white; }
+.reserved { background-color: red; border-radius: 122px; border: 1px solid black; text-align: center; color: #000000; }
 
 
 ////////
