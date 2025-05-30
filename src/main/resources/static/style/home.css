@@ -117,14 +117,15 @@ body {
 
 .calendar { display: flex; flex-wrap: wrap; gap: 2rem; }
 .month { padding: 1rem; width: 250px; color: white; }
-.day { display: inline-block; width: 30px; height: 30px; text-align: center; margin: 2px; background-color: green; border-radius: 122px; border: 1px solid black; color: white;}
-.reserved { background-color: red; border-radius: 122px; border: 1px solid black; text-align: center; color: white; }
+.day { display: inline-block; width: 30px; height: 30px; text-align: center; margin: 2px; background: rgba(0, 255, 0, 0.40); border-radius: 122px; color: white;}
+.reserved { background: rgba(255, 0, 0, 0.40); border-radius: 122px; text-align: center; color: white; }
 
 .btn { width:100%; margin-bottom: 1rem; background: rgba(0, 0, 0, 0.45); color: white; border: none; border-radius: 20px; }
 
 .btn:hover {  background-color: #212529; color: white; }
 
-.selected { background: rgba(0, 0, 0, 0.75); }
+.selected { background: rgba(0, 0, 255, 0.60); color: white; }
+.selected:hover { background: rgba(0, 0, 255, 1); color: white; }
 
 .img {border-radius: 12px;}
 
