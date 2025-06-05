@@ -6,7 +6,7 @@ html, body {
 
 
 body {
-  background-image: url("/images/background.webp");
+  background-image: url("/images/background.jpg");
   background-size: cover;               /* or 100% 100%, if you prefer stretch */
   background-repeat: no-repeat;
   background-position: center center;
