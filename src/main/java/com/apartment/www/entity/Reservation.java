@@ -4,7 +4,7 @@ package com.apartment.www.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,6 +15,14 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;
+    private String color;
+    private String name;
+    private String Description;
+    private int year;
+    private int month;
+
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservationDate> dates;
+
 }
 

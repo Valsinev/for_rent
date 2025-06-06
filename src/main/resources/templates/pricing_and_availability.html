@@ -54,19 +54,19 @@
         <div class="header container-sm mt-3">
             <div class="row">
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
-                    <a href="/" class="btn " aria-current="page" th:text="#{about}">About</a>
+                    <a href="/" class="btn custom-btn " aria-current="page" th:text="#{about}">About</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
-                    <a href="/attractions" class="btn" aria-current="page" th:text="#{attractions}">Attractions</a>
+                    <a href="/attractions" class="btn custom-btn" aria-current="page" th:text="#{attractions}">Attractions</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
-                    <a href="/services" class="btn" aria-current="page" th:text="#{services}">Services</a>
+                    <a href="/services" class="btn custom-btn" aria-current="page" th:text="#{services}">Services</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
-                    <a href="/location" class="btn" aria-current="page" th:text="#{location}">Location</a>
+                    <a href="/location" class="btn custom-btn" aria-current="page" th:text="#{location}">Location</a>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
-                    <a href="/photos" class="btn" aria-current="page" th:text="#{photos}">Photos</a>
+                    <a href="/photos" class="btn custom-btn" aria-current="page" th:text="#{photos}">Photos</a>
                 </div>
             </div>
         </div>
@@ -86,11 +86,13 @@
 
 
 
+
+
         <div class="row mb-3">
             <div class="custom-card">
                 <div class="container">
                     <div class="calendar row">
-                        <div class="month col-lg-3 col-md-4 col-sm-6 above" th:each="entry : ${reservedGrouped}">
+                        <div class="month col-lg-3 col-md-4 col-sm-6 above" th:each="entry : ${calendarData}">
                             <strong th:text="${#temporals.format(entry.key.atDay(1), 'MMMM yyyy', locale)}"></strong>
                             <br/>
                             <div class="day " th:each="day : ${#numbers.sequence(1, entry.key.lengthOfMonth())}"
