@@ -1,6 +1,8 @@
 package com.apartment.www.controller;
 
+import com.apartment.www.dto.ReservationForm;
 import com.apartment.www.entity.Reservation;
+import com.apartment.www.mapper.ReservationMapper;
 import com.apartment.www.repository.ReservationRepository;
 import com.apartment.www.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +21,33 @@ public class PricingController {
 
     private final ReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    private final ReservationMapper reservationMapper;
 
     @Autowired
-    public PricingController(ReservationService reservationService, ReservationRepository reservationRepository) {
+    public PricingController(ReservationService reservationService, ReservationRepository reservationRepository, ReservationMapper reservationMapper) {
         this.reservationService = reservationService;
         this.reservationRepository = reservationRepository;
+        this.reservationMapper = reservationMapper;
     }
 
     @GetMapping
     public String getReservations(Model model, Locale locale) {
         List<Reservation> all = reservationRepository.findAll();
-        Map<YearMonth, List<Integer>> grouped = new TreeMap<>();
+        List<ReservationForm> dtos = all.stream().map(reservationMapper::toDto).toList();
 
-        all.forEach(reservation -> {
-                LocalDate date = reservation.getDate();
-                YearMonth ym = YearMonth.from(date);
-                grouped.computeIfAbsent(ym, k -> new ArrayList<>()).add(date.getDayOfMonth());
-        });
+        // Build calendarData: Map<MonthYear String, Map<Day Integer, List<Color>>>
+        Map<YearMonth, List<Integer>> calendarData = new LinkedHashMap<>();
 
-        model.addAttribute("reservedGrouped", grouped);
+        for (ReservationForm reservation : dtos) {
+            YearMonth yearMonth = YearMonth.of(reservation.getYear(), reservation.getMonth());
+
+            calendarData.putIfAbsent(yearMonth, new ArrayList<>());
+
+            calendarData.get(yearMonth).addAll(reservation.getSelectedDays());
+        }
+
+        model.addAttribute("calendarData", calendarData);
+//        model.addAttribute("reservations", all);
         model.addAttribute("locale", locale);
         return "pricing_and_availability";
     }

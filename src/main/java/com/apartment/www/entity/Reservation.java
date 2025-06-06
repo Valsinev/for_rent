@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,6 +16,15 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;
+    private String color;
+    private String name;
+    private String Description;
+    private int year;
+    private int month;
+    @ElementCollection
+    @CollectionTable(name = "reservation_dates", joinColumns = @JoinColumn(name = "reservation_id"))
+    @Column(name = "date")
+    private List<LocalDate> dates;
+
 }
 
