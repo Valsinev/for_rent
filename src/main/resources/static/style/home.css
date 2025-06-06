@@ -131,7 +131,7 @@ body {
 
 ///////////////admin calendar
 .admin-calendar { display: flex; flex-wrap: wrap; gap: 2rem; }
-.admin-day { display: inline-block; width: 30px; height: 30px; text-align: center; margin: 2px; border-radius: 122px; color: white;}
+.admin-day { display: inline-block; width: 30px; height: 30px; text-align: center; margin: 2px; border-radius: 122px; color: black;}
 .admin-month { padding: 1rem; width: 250px; color: white; }
 
 

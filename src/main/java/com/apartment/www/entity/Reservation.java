@@ -4,7 +4,6 @@ package com.apartment.www.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,10 +20,9 @@ public class Reservation {
     private String Description;
     private int year;
     private int month;
-    @ElementCollection
-    @CollectionTable(name = "reservation_dates", joinColumns = @JoinColumn(name = "reservation_id"))
-    @Column(name = "date")
-    private List<LocalDate> dates;
+
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservationDate> dates;
 
 }
 

@@ -3,6 +3,7 @@ package com.apartment.www.mapper;
 
 import com.apartment.www.dto.ReservationForm;
 import com.apartment.www.entity.Reservation;
+import com.apartment.www.entity.ReservationDate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -17,10 +18,16 @@ public class ReservationMapper {
         reservation.setDescription(reservationForm.getDescription());
         reservation.setMonth(reservationForm.getMonth());
         reservation.setYear(reservationForm.getYear());
-        reservation.setDates(reservationForm.getSelectedDays().
-                stream()
-                .map(day -> LocalDate.of(reservationForm.getYear(), reservationForm.getMonth(), day))
+        if (reservationForm.getSelectedDays() != null) {
+        reservation.setDates(reservationForm.getSelectedDays().stream()
+                .map(day -> {
+                    ReservationDate reservationDate = new ReservationDate();
+                    reservationDate.setReservation(reservation);
+                    reservationDate.setDate(LocalDate.of(reservationForm.getYear(), reservationForm.getMonth(), day));
+                    return reservationDate;
+                })
                 .toList());
+        }
         return reservation;
     }
 
@@ -32,10 +39,13 @@ public class ReservationMapper {
         reservationForm.setDescription(reservation.getDescription());
         reservationForm.setMonth(reservation.getMonth());
         reservationForm.setYear(reservation.getYear());
-        reservationForm.setSelectedDays(reservation.getDates()
+        if (reservation.getDates() != null) {
+        reservationForm.setSelectedDays(
+                reservation.getDates()
                 .stream()
-                .map(LocalDate::getDayOfMonth)
+                .map(reservationDate -> reservationDate.getDate().getDayOfMonth())
                 .toList());
+        }
         return reservationForm;
     }
 }

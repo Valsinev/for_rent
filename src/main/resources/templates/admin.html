@@ -68,21 +68,24 @@
 
 
     <div class="container-fluid custom-card row mt-2">
-        <div class="row" th:if="${reservations != null}" th:each="reservation : ${reservations}">
+        <div class="row mt-2 mb-2" th:if="${reservations != null}" th:each="reservation : ${reservations}">
             <div class="col-1 above" th:style="|background-color:${reservation.color}|"></div>
-            <div class="col above"
+            <div class="col-sm-11 col-md-11 col-lg-9 col-xl-8 col-xxl-7 above"
                  th:text="|${reservation.name} - ${reservation.description}|">
 
             </div>
             <div class="col above">
                 <a th:href="@{'/admin/reservations/edit/' + ${reservation.id}}"
+                   th:value="${reservation}"
                    class="btn btn-primary"
                    th:text="#{edit}">Edit</a>
             </div>
             <div class="col above">
                 <a th:href="@{'/admin/reservations/delete/' + ${reservation.id}}"
                    class="btn btn-danger"
+                   th:onclick="'return confirm(\'' + #{confirm.delete.message} + '\')'"
                    th:text="#{delete}">Delete</a>
+
             </div>
         </div>
     </div>
@@ -94,21 +97,16 @@
             <strong th:text="${entry.key}"></strong>
             <br>
             <!-- Loop over days in this month -->
-            <div class="admin-day" th:each="dayEntry : ${entry.value}">
-                <span th:text="${dayEntry.key}"></span>
+            <div class="" th:each="color : ${entry.value}">
+<!--                <span th:text="${dayEntry.key}"></span>-->
                 <!-- Each reservation color for that day -->
-                <div>
-                <span th:each="color : ${dayEntry.value}"
-                      th:style="'display:inline-block;width:14px;height:14px;margin:2px;border-radius:3px;background-color:' + ${color}"
-                      th:title="${color}">
+                <span class="admin-day" th:each="day : ${color.value}"
+                      th:text="${day}"
+                      th:style="'background-color:' + ${color.key}">
                 </span>
-                </div>
             </div>
         </div>
     </div>
-
-
-
 
 
 
@@ -121,6 +119,7 @@
     <div class="container">
     </div>
 </footer>
+
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
