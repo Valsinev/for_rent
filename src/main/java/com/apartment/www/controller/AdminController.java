@@ -59,7 +59,7 @@ public class AdminController {
 
         for (ReservationForm reservation : sortedReservations) {
             String monthYear = reservation.getMonthYear(locale);
-            calendarData.putIfAbsent(monthYear, new TreeMap<>());
+            calendarData.putIfAbsent(monthYear, new LinkedHashMap<>()); // changed here
 
             Map<String, List<Integer>> dayMap = calendarData.get(monthYear);
 
@@ -68,6 +68,7 @@ public class AdminController {
                 dayMap.get(reservation.getColor()).add(day);
             }
         }
+
 
 
         model.addAttribute("calendarData", calendarData);
