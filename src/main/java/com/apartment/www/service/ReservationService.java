@@ -1,7 +1,9 @@
 package com.apartment.www.service;
 
+import com.apartment.www.dto.ReservationForm;
 import com.apartment.www.entity.Reservation;
 import com.apartment.www.entity.ReservationDate;
+import com.apartment.www.mapper.ReservationMapper;
 import com.apartment.www.repository.ReservationDatesRepository;
 import com.apartment.www.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
@@ -17,11 +19,13 @@ import java.util.stream.Collectors;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationDatesRepository reservationDatesRepository;
+    private final ReservationMapper reservationMapper;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, ReservationDatesRepository reservationDatesRepository) {
+    public ReservationService(ReservationRepository reservationRepository, ReservationDatesRepository reservationDatesRepository, ReservationMapper reservationMapper) {
         this.reservationRepository = reservationRepository;
         this.reservationDatesRepository = reservationDatesRepository;
+        this.reservationMapper = reservationMapper;
     }
 
 
@@ -46,4 +50,9 @@ public class ReservationService {
         byDate.ifPresent(reservationRepository::delete);
     }
 
+    @Transactional
+    public void updateReservation(Reservation reservation, ReservationForm reservationForm) {
+        reservationMapper.updateReservationByForm(reservation, reservationForm);
+
+    }
 }

@@ -7,6 +7,7 @@ import com.apartment.www.entity.ReservationDate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Component
 public class ReservationMapper {
@@ -22,7 +23,7 @@ public class ReservationMapper {
         reservation.setDates(reservationForm.getSelectedDays().stream()
                 .map(day -> {
                     ReservationDate reservationDate = new ReservationDate();
-                    reservationDate.setReservation(reservation);
+//                    reservationDate.setReservation(reservation);
                     reservationDate.setDate(LocalDate.of(reservationForm.getYear(), reservationForm.getMonth(), day));
                     return reservationDate;
                 })
@@ -48,4 +49,45 @@ public class ReservationMapper {
         }
         return reservationForm;
     }
+
+//    public void updateReservationByForm(Reservation reservation, ReservationForm reservationForm) {
+//        reservation.setId(reservationForm.getId());
+//        reservation.setName(reservationForm.getName());
+//        reservation.setColor(reservationForm.getColor());
+//        reservation.setDescription(reservation.getDescription());
+//        reservation.setYear(reservationForm.getYear());
+//        reservation.setMonth(reservation.getMonth());
+//        if (reservationForm.getSelectedDays() != null) {
+//            reservation.setDates(reservationForm.getSelectedDays().stream()
+//                    .map(day -> {
+//                        ReservationDate reservationDate = new ReservationDate();
+////                        reservationDate.setReservation(reservation);
+//                        reservationDate.setDate(LocalDate.of(reservationForm.getYear(), reservationForm.getMonth(), day));
+//                        return reservationDate;
+//                    })
+//                    .toList());
+//        }
+//    }
+
+    public void updateReservationByForm(Reservation reservation, ReservationForm reservationForm) {
+        reservation.setName(reservationForm.getName());
+        reservation.setColor(reservationForm.getColor());
+        reservation.setDescription(reservationForm.getDescription());
+        reservation.setYear(reservationForm.getYear());
+        reservation.setMonth(reservationForm.getMonth());
+
+        if (reservationForm.getSelectedDays() != null) {
+            List<ReservationDate> newDates = reservationForm.getSelectedDays().stream()
+                    .map(day -> {
+                        ReservationDate reservationDate = new ReservationDate();
+                        reservationDate.setDate(LocalDate.of(reservationForm.getYear(), reservationForm.getMonth(), day));
+                        return reservationDate;
+                    })
+                    .toList();
+
+            reservation.getDates().clear();         // ❗ Important
+            reservation.getDates().addAll(newDates); // ✅ Add new dates to the same list
+        }
+    }
+
 }

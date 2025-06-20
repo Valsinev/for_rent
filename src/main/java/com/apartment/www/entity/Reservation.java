@@ -21,7 +21,11 @@ public class Reservation {
     private int year;
     private int month;
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "reservation_id")
     private List<ReservationDate> dates;
 
 }

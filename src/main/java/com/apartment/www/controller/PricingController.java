@@ -33,12 +33,22 @@ public class PricingController {
     @GetMapping
     public String getReservations(Model model, Locale locale) {
         List<Reservation> all = reservationRepository.findAll();
-        List<ReservationForm> dtos = all.stream().map(reservationMapper::toDto).toList();
+        List<ReservationForm> reservationDtos = all.stream().map(reservationMapper::toDto).toList();
+
+
+        List<ReservationForm> sortedReservations = reservationDtos.stream()
+                .sorted(
+                        Comparator.comparing(ReservationForm::getYear)
+                                .thenComparing(ReservationForm::getMonth)
+                                .thenComparing(r -> r.getSelectedDays().stream()
+                                        .min(Integer::compareTo)
+                                        .orElse(Integer.MIN_VALUE))
+                ).toList();
 
         // Build calendarData: Map<MonthYear String, Map<Day Integer, List<Color>>>
         Map<YearMonth, List<Integer>> calendarData = new LinkedHashMap<>();
 
-        for (ReservationForm reservation : dtos) {
+        for (ReservationForm reservation : sortedReservations) {
             YearMonth yearMonth = YearMonth.of(reservation.getYear(), reservation.getMonth());
 
             calendarData.putIfAbsent(yearMonth, new ArrayList<>());

@@ -12,9 +12,6 @@ public class ReservationDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private LocalDate date;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinColumn(name = "reservation_id", referencedColumnName = "id")
-    private Reservation reservation;
-
 }

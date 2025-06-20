@@ -42,16 +42,24 @@ public class AdminController {
     public String showAdminPage(Model model, Locale locale) {
         List<Reservation> allReservations = reservationRepository.findAll();
 
-        List<ReservationForm> dtos = allReservations.stream().map(reservationMapper::toDto).toList();
+        List<ReservationForm> reservationDtos = allReservations.stream().map(reservationMapper::toDto).toList();
+        List<ReservationForm> sortedReservations = reservationDtos.stream()
+                        .sorted(
+                                Comparator.comparing(ReservationForm::getYear)
+                                        .thenComparing(ReservationForm::getMonth)
+                                        .thenComparing(r -> r.getSelectedDays().stream()
+                                                .min(Integer::compareTo)
+                                                .orElse(Integer.MIN_VALUE))
+                        ).toList();
 
-        model.addAttribute("reservations", dtos);
+        model.addAttribute("reservations", sortedReservations);
 
-        // Build calendarData: Map<MonthYear String, Map<Day Integer, List<Color>>>
+        // Build calendarData
         Map<String, Map<String, List<Integer>>> calendarData = new LinkedHashMap<>();
 
-        for (ReservationForm reservation : dtos) {
+        for (ReservationForm reservation : sortedReservations) {
             String monthYear = reservation.getMonthYear(locale);
-            calendarData.putIfAbsent(monthYear, new TreeMap<>()); // Sorted days
+            calendarData.putIfAbsent(monthYear, new TreeMap<>());
 
             Map<String, List<Integer>> dayMap = calendarData.get(monthYear);
 
@@ -60,6 +68,7 @@ public class AdminController {
                 dayMap.get(reservation.getColor()).add(day);
             }
         }
+
 
         model.addAttribute("calendarData", calendarData);
         return "admin";
@@ -79,11 +88,18 @@ public class AdminController {
 
 
     @PostMapping("/reservations")
-    @Transactional
     public String postReservations(@ModelAttribute ReservationForm reservationForm)
     {
-        Reservation reservation = reservationMapper.toEntity(reservationForm);
+        Reservation reservation;
 
+        if (reservationForm.getId() == null) {
+            reservation = reservationMapper.toEntity(reservationForm);
+        } else  {
+            reservation = reservationRepository.findById(reservationForm.getId()).orElseThrow();
+            reservation.getDates().clear();
+            reservationRepository.flush();
+            reservationService.updateReservation(reservation, reservationForm);
+        }
 
         reservationRepository.save(reservation);
 

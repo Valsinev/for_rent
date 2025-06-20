@@ -35,12 +35,12 @@
     </div>
     <div class="mb-3">
         <label for="year" class="form-label" th:text="#{year}">Year:</label>
-        <input type="number" id="year" name="year" th:field="*{year}" class="form-control" required>
+        <input type="number" id="year" name="year" th:field="*{year}" class="form-control" min="2025" max="2055" required>
     </div>
 
     <div class="mb-3">
         <label for="month" class="form-label" th:text="#{month}">Month (1-12):</label>
-        <input type="number" id="month" name="month" th:field="*{month}" class="form-control" required>
+        <input type="number" id="month" name="month" th:field="*{month}" class="form-control" min="1" max="12" required>
     </div>
 
     <div class="card mb-3">
