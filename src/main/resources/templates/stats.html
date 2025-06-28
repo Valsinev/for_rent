@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{stats}">Stats</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/style/home.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="icon" type="images/x-icon" href="/images/home.icon.png" >
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/" th:text="#{home}">Home</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item me-3 d-flex align-items-center text-white">
+                    <i class="bi bi-telephone-fill me-2"></i>
+                    <span th:text="${ownerPhone}">088242422</span>
+                </li>
+                <li class="nav-item d-flex align-items-center text-white">
+                    <i class="bi bi-envelope-fill me-2"></i>
+                    <span th:text="${ownerEmail}">testmail@gmail.com</span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="main-content container-fluid pb-5">
+
+
+    <section class="content-top container-sm">
+
+
+        <div class="row mt-4" >
+            <div class="col">
+                <a href="/admin/stats/income" class="btn btn-success" aria-current="page" th:text="#{add.income}">Add Income</a>
+            </div>
+
+            <div class="col">
+                <a href="/admin/stats/expense" class="btn btn-success" aria-current="page" th:text="#{add.expense}">Add Expense</a>
+            </div>
+
+
+            <div class="col">
+                <a href="/admin" class="btn btn-success" aria-current="page" th:text="#{return}">Return</a>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="search container-sm mt-3 mb-3">
+
+        <div class="row ">
+
+            <h4 th:text="#{search.transaction.for.period}">Search Transactions for period</h4>
+
+            <form th:action="@{/admin/stats/income/search}" method="get" class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label for="start" class="form-label" th:text="#{start.date}">Start Date:</label>
+                    <input type="date" id="start" name="start" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="end" class="form-label" th:text="#{end.date}">End Date:</label>
+                    <input type="date" id="end" name="end" class="form-control" required>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100" th:text="#{search}">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div th:if="${incomes != null}">
+                <h2 class="mt-4" th:text="#{income.results}">Income Results</h2>
+                <table class="table table-bordered table-striped mt-3">
+                    <thead class="table-dark">
+                    <tr>
+                        <th th:text="#{name}">Name</th>
+                        <th th:text="#{description}">Description</th>
+                        <th th:text="#{date}">Date</th>
+                        <th th:text="#{amount}">Amount</th>
+                        <th th:text="#{action}">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="income : ${incomes}">
+                        <td th:text="${income.name}">Name</td>
+                        <td th:text="${income.description}">Description</td>
+                        <td th:text="${#temporals.format(income.date, 'dd MMM yyyy', #locale)}">2024-01-01</td>
+                        <td th:text="${income.amount}">100.00</td>
+                        <td>
+
+                            <a th:href="@{/admin/stats/income/edit/{id}(id=${income.id})}" class="btn btn-primary btn-sm" th:text="#{edit}">Edit</a>
+
+                            <form th:action="@{/admin/stats/income/delete/{id}(id=${income.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="start" th:value="${start}" />
+                                <input type="hidden" name="end" th:value="${end}" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        th:onclick="|return confirm('#{confirm.delete.income}');|"
+                                        th:text="#{delete}">Delete</button>
+                            </form>
+
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div th:if="${expenses != null}">
+                <h2 class="mt-4" th:text="#{expenses.results}">Expenses Results</h2>
+                <table class="table table-bordered table-striped mt-3">
+                    <thead class="table-dark">
+                    <tr>
+                        <th th:text="#{name}">Name</th>
+                        <th th:text="#{description}">Description</th>
+                        <th th:text="#{date}">Date</th>
+                        <th th:text="#{amount}">Amount</th>
+                        <th th:text="#{action}">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="expense : ${expenses}">
+                        <td th:text="${expense.name}">Name</td>
+                        <td th:text="${expense.description}">Description</td>
+                        <td th:text="${#temporals.format(expense.date, 'dd MMM yyyy', #locale)}">2024-01-01</td>
+                        <td th:text="${expense.amount}">100.00</td>
+                        <td>
+                            <a th:href="@{/admin/stats/expense/edit/{id}(id=${expense.id})}" class="btn btn-primary btn-sm" th:text="#{edit}">Edit</a>
+
+                            <form th:action="@{/admin/stats/expense/delete/{id}(id=${expense.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="start" th:value="${start}" />
+                                <input type="hidden" name="end" th:value="${end}" />
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm"
+                                        th:onclick="|return confirm('#{confirm.delete.expense}');|"
+                                        th:text="#{delete}">Delete</button>
+                            </form>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <table class="table table-bordered table-striped w-50">
+                <tbody>
+                <tr>
+                    <th scope="row" th:text="#{total.incomes}">Total Incomes:</th>
+                    <td th:text="${totalIncomes}">0.00</td>
+                </tr>
+                <tr>
+                    <th scope="row" th:text="#{total.expenses}">Total Expenses:</th>
+                    <td th:text="${totalExpenses}">0.00</td>
+                </tr>
+                <tr class="table-info">
+                    <th scope="row" th:text="#{incomes.minus.expenses}">Incomes - Expenses:</th>
+                    <td th:text="${incomesMinusExpenses}">0.00</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </section>
+
+
+
+
+
+</section>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+</body>
+</html>
