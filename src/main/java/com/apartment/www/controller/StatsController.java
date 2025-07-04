@@ -28,6 +28,7 @@ public class StatsController {
     @GetMapping
     public String getStatsPage(Model model) {
         model.addAttribute("incomes", List.of());
+        model.addAttribute("isSearched", false);
         return "stats.html";
     }
 
@@ -89,8 +90,8 @@ public class StatsController {
 
     @GetMapping("/income/search")
     public String findIncomesAndExpensesBetweenDate(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end, Model model) {
-        List<Income> incomes = incomeRepository.findByDateBetween(start, end);
-        List<Expense> expenses = expenseRepository.findByDateBetween(start, end);
+        List<Income> incomes = incomeRepository.findByDateBetweenOrderByDate(start, end);
+        List<Expense> expenses = expenseRepository.findByDateBetweenOrderByDate(start, end);
         Stream<BigDecimal> incomeAmountStream = incomes.stream().map(Income::getAmount);
         Stream<BigDecimal> expenseAmountStream = expenses.stream().map(Expense::getAmount);
 
@@ -104,6 +105,7 @@ public class StatsController {
         model.addAttribute("incomesMinusExpenses", incomesMinusExpenses);
         model.addAttribute("start", start);
         model.addAttribute("end", end);
+        model.addAttribute("isSearched", true);
         return "stats.html";
     }
 

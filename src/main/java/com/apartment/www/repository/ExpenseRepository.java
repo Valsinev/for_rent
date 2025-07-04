@@ -11,6 +11,7 @@ import java.util.List;
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
 
-    @Query("SELECT e FROM Expense e WHERE e.date BETWEEN :start AND :end")
-    List<Expense> findByDateBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
+//    @Query("SELECT e FROM Expense e WHERE e.date BETWEEN :start AND :end")
+//    List<Expense> findByDateBetween(@Param("start") LocalDate start, @Param("end") LocalDate end);
+    List<Expense> findByDateBetweenOrderByDate(LocalDate start, LocalDate end);
 }

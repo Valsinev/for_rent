@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface IncomeRepository extends JpaRepository<Income, Long> {
 
-    @Query("SELECT i FROM Income i WHERE i.date BETWEEN :start AND :end")
-    List<Income> findByDateBetween(@Param("start")LocalDate start, @Param("end") LocalDate end);
+//    @Query("SELECT i FROM Income i WHERE i.date BETWEEN :start AND :end ORDER BY i.date")
+//List<Income> findByDateBetween(@Param("start")LocalDate start, @Param("end") LocalDate end);
+    List<Income> findByDateBetweenOrderByDate(LocalDate start, LocalDate end);
 }

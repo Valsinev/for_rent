@@ -50,25 +50,6 @@ public class ReservationMapper {
         return reservationForm;
     }
 
-//    public void updateReservationByForm(Reservation reservation, ReservationForm reservationForm) {
-//        reservation.setId(reservationForm.getId());
-//        reservation.setName(reservationForm.getName());
-//        reservation.setColor(reservationForm.getColor());
-//        reservation.setDescription(reservation.getDescription());
-//        reservation.setYear(reservationForm.getYear());
-//        reservation.setMonth(reservation.getMonth());
-//        if (reservationForm.getSelectedDays() != null) {
-//            reservation.setDates(reservationForm.getSelectedDays().stream()
-//                    .map(day -> {
-//                        ReservationDate reservationDate = new ReservationDate();
-////                        reservationDate.setReservation(reservation);
-//                        reservationDate.setDate(LocalDate.of(reservationForm.getYear(), reservationForm.getMonth(), day));
-//                        return reservationDate;
-//                    })
-//                    .toList());
-//        }
-//    }
-
     public void updateReservationByForm(Reservation reservation, ReservationForm reservationForm) {
         reservation.setName(reservationForm.getName());
         reservation.setColor(reservationForm.getColor());
