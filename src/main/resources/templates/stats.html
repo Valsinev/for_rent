@@ -27,7 +27,15 @@
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
+                <a href="/admin/stats/income/search" class="btn btn-primary w-100" aria-current="page" th:text="#{search.income}">Search Income</a>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
                 <a href="/admin/stats/expense" class="btn btn-danger w-100" aria-current="page" th:text="#{add.expense}">Add Expense</a>
+            </div>
+
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
+                <a href="/admin/stats/expense/search" class="btn btn-primary w-100" aria-current="page" th:text="#{search.expense}">Search Expense</a>
             </div>
 
 
@@ -47,14 +55,14 @@
             <h4 th:text="#{search.transaction.for.period}">Search Transactions for period</h4>
         </div>
 
-        <form th:action="@{/admin/stats/income/search}" method="get" class="row g-3 mb-4">
+        <form th:action="@{/admin/stats/transactions/search}" method="get" class="row g-3 mb-4">
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
                 <label for="start" class="form-label" th:text="#{start.date}">Start Date:</label>
-                <input type="date" id="start" name="start" class="form-control" required>
+                <input type="date" id="start" name="start" class="form-control" th:value="${start}" required>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
                 <label for="end" class="form-label" th:text="#{end.date}">End Date:</label>
-                <input type="date" id="end" name="end" class="form-control" required>
+                <input type="date" id="end" name="end" class="form-control" th:value="${end}" required>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100" th:text="#{search}">Search</button>

@@ -7,6 +7,7 @@ import com.apartment.www.repository.IncomeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -27,8 +28,32 @@ public class StatsController {
 
     @GetMapping
     public String getStatsPage(Model model) {
-        model.addAttribute("incomes", List.of());
-        model.addAttribute("isSearched", false);
+
+        if (!model.containsAttribute("incomes")) {
+            model.addAttribute("incomes", List.of());
+        }
+        if (!model.containsAttribute("expenses")) {
+            model.addAttribute("expenses", List.of());
+        }
+        if (!model.containsAttribute("totalIncomes")) {
+            model.addAttribute("totalIncomes", BigDecimal.ZERO);
+        }
+        if (!model.containsAttribute("totalExpenses")) {
+            model.addAttribute("totalExpenses", BigDecimal.ZERO);
+        }
+        if (!model.containsAttribute("incomesMinusExpenses")) {
+            model.addAttribute("incomesMinusExpenses", BigDecimal.ZERO);
+        }
+        if (!model.containsAttribute("start")) {
+            model.addAttribute("start", LocalDate.now());
+        }
+        if (!model.containsAttribute("end")) {
+            model.addAttribute("end", LocalDate.now());
+        }
+        if (!model.containsAttribute("isSearched")) {
+            model.addAttribute("isSearched", false);
+        }
+
         return "stats.html";
     }
 
@@ -67,7 +92,7 @@ public class StatsController {
 
     @PostMapping("/editIncome/{id}")
     public String updateIncome(@PathVariable Long id, @ModelAttribute Income income) {
-        income.setId(id); // Ensure ID is retained
+        income.setId(id);
         incomeRepository.save(income);
         return "redirect:/admin/stats";
     }
@@ -88,8 +113,11 @@ public class StatsController {
 
 
 
-    @GetMapping("/income/search")
-    public String findIncomesAndExpensesBetweenDate(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end, Model model) {
+    @GetMapping("/transactions/search")
+    public String findIncomesAndExpensesBetweenDate(@RequestParam("start") LocalDate start,
+                                                    @RequestParam("end") LocalDate end,
+                                                    RedirectAttributes redirectAttributes) {
+
         List<Income> incomes = incomeRepository.findByDateBetweenOrderByDate(start, end);
         List<Expense> expenses = expenseRepository.findByDateBetweenOrderByDate(start, end);
         Stream<BigDecimal> incomeAmountStream = incomes.stream().map(Income::getAmount);
@@ -98,15 +126,82 @@ public class StatsController {
         BigDecimal totalIncomes = incomeAmountStream.reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal totalExpenses = expenseAmountStream.reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal incomesMinusExpenses = totalIncomes.subtract(totalExpenses);
-        model.addAttribute("incomes", incomes);
-        model.addAttribute("expenses", expenses);
-        model.addAttribute("totalIncomes", totalIncomes);
-        model.addAttribute("totalExpenses", totalExpenses);
-        model.addAttribute("incomesMinusExpenses", incomesMinusExpenses);
-        model.addAttribute("start", start);
-        model.addAttribute("end", end);
-        model.addAttribute("isSearched", true);
-        return "stats.html";
+        redirectAttributes.addFlashAttribute("incomes", incomes);
+        redirectAttributes.addFlashAttribute("expenses", expenses);
+        redirectAttributes.addFlashAttribute("totalIncomes", totalIncomes);
+        redirectAttributes.addFlashAttribute("totalExpenses", totalExpenses);
+        redirectAttributes.addFlashAttribute("incomesMinusExpenses", incomesMinusExpenses);
+        redirectAttributes.addFlashAttribute("start", start);
+        redirectAttributes.addFlashAttribute("end", end);
+        redirectAttributes.addFlashAttribute("isSearched", true);
+        return "redirect:/admin/stats";
+    }
+
+    @GetMapping("/income/search")
+    public String getIncomeSearchPage(Model model) {
+
+        if (!model.containsAttribute("incomes")) {
+            model.addAttribute("incomes", List.of());
+        }
+        if (!model.containsAttribute("totalIncomes")) {
+            model.addAttribute("totalIncomes", BigDecimal.ZERO);
+        }
+        return "stats-search-income";
+    }
+
+    @PostMapping("/income/search")
+    public String searchIncomesByName(@RequestParam("incomeName") String incomeName,
+                                      RedirectAttributes redirectAttributes) {
+
+        List<Income> allByName = incomeRepository.findAllByNameContaining(incomeName);
+
+        //summ the amount of all
+        BigDecimal totalIncomes = incomeRepository.findAllAmountByNameContaining(incomeName);
+
+        if (allByName == null || allByName.isEmpty()) {
+            redirectAttributes.addFlashAttribute("incomeName", incomeName);
+            return "redirect:/admin/stats/income/search";
+        }
+
+        redirectAttributes.addFlashAttribute("incomeName", incomeName);
+        redirectAttributes.addFlashAttribute("incomes", allByName);
+        redirectAttributes.addFlashAttribute("totalIncomes", totalIncomes);
+
+        return "redirect:/admin/stats/income/search";
+    }
+
+
+    @GetMapping("/expense/search")
+    public String getExpenseSearchPage(Model model) {
+
+        if (!model.containsAttribute("expenses")) {
+            model.addAttribute("expenses", List.of());
+        }
+        if (!model.containsAttribute("totalExpenses")) {
+            model.addAttribute("totalExpenses", BigDecimal.ZERO);
+        }
+        return "stats-search-expense";
+    }
+
+    @PostMapping("/expense/search")
+    public String searchExpensesByName(@RequestParam("expenseName") String expenseName,
+                                      RedirectAttributes redirectAttributes) {
+
+        List<Expense> allByName = expenseRepository.findAllByNameContaining(expenseName);
+
+        //summ the amount of all
+        BigDecimal totalExpenses = expenseRepository.findAllAmountByNameContaining(expenseName);
+
+        if (allByName == null || allByName.isEmpty()) {
+            redirectAttributes.addFlashAttribute("expenseName", expenseName);
+            return "redirect:/admin/stats/expense/search";
+        }
+
+        redirectAttributes.addFlashAttribute("expenseName", expenseName);
+        redirectAttributes.addFlashAttribute("expenses", allByName);
+        redirectAttributes.addFlashAttribute("totalExpenses", totalExpenses);
+
+        return "redirect:/admin/stats/expense/search";
     }
 
     @PostMapping("/income/delete/{id}")

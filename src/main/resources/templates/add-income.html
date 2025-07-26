@@ -26,7 +26,11 @@
     </div>
     <div class="mb-3">
         <label for="date" class="form-label" th:text="#{date}">Date:</label>
-        <input type="date" id="date" name="date" th:field="*{date}" required>
+<!--        <input type="date" id="date" name="date" th:field="*{date}" required>-->
+        <input type="date" id="date" name="date"
+               th:value="${income.date != null} ? ${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd').format(income.date)} : ''"
+               class="form-control" required>
+
     </div>
 
     <div class="mb-3">

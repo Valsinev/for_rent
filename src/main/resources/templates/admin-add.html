@@ -50,9 +50,9 @@
         <div class="checkbox-grid above">
             <div th:each="day : ${#numbers.sequence(1, 31)}">
                 <label>
-                    <input type="checkbox" name="selectedDays"
+                    <input type="checkbox" name="days"
                            th:value="${day}"
-                           th:checked="${reservation.selectedDays != null and reservation.selectedDays.contains(day)}" />
+                           th:checked="${reservation.days != null and reservation.days.contains(day)}" />
 
                     <span th:text="${day}">1</span>
                 </label>
