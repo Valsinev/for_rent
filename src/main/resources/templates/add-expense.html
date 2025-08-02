@@ -12,27 +12,33 @@
 
 <h1 th:text="#{add.expense}">Add Expense</h1>
 
-<form th:action="@{${expense.id} != null ? '/admin/stats/editExpense/' + ${expense.id} : '/admin/stats/addExpense'}"
-      method="post" th:object="${expense}">
+<form th:action="@{/admin/stats/expenses/addExpense}"
+      method="post" th:object="${expenseDto}">
+
+    <input type="hidden" th:field="*{id}" />
 
 
     <div class="mb-3">
         <label for="name" class="form-label" th:text="#{name}">Name:</label>
+        <small class="col-12 text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
         <input type="text" id="name" name="name" th:field="*{name}" class="form-control" required>
     </div>
     <div class="mb-3">
         <label for="description" class="form-label" th:text="#{description}">Description:</label>
+        <small class="col-12 text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small>
         <input type="text" id="description" name="description" th:field="*{description}" class="form-control">
     </div>
     <div class="mb-3">
         <label for="date" class="form-label" th:text="#{date}">Date:</label>
+        <small class="col-12 text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></small>
         <input type="date" id="date" name="date"
-               th:value="${expense.date != null} ? ${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd').format(expense.date)} : ''"
+               th:value="${expenseDto.date != null} ? ${T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd').format(expenseDto.date)} : ''"
                class="form-control" required>
     </div>
 
     <div class="mb-3">
         <label for="amount" class="form-label" th:text="#{amount}">Amount:</label>
+        <small class="col-12 text-danger" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></small>
         <input type="number" id="amount" name="amount" th:field="*{amount}" class="form-control" min="10" step="0.01" required>
     </div>
 
@@ -40,7 +46,7 @@
     </div>
 
     <button type="submit" class="btn btn-success" th:text="#{add}">Add</button>
-    <a  class="btn btn-primary" th:text="#{return}" th:href="@{'/admin/stats'}">Return</a>
+    <a class="btn btn-primary" th:text="#{return}" th:href="@{'/admin/stats'}">Return</a>
 </form>
 
 </body>

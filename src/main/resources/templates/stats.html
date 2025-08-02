@@ -23,19 +23,19 @@
 
         <div class="row" >
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
-                <a href="/admin/stats/income" class="btn btn-success w-100" aria-current="page" th:text="#{add.income}">Add Income</a>
+                <a href="/admin/stats/incomes" class="btn btn-success w-100" aria-current="page" th:text="#{add.income}">Add Income</a>
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
-                <a href="/admin/stats/income/search" class="btn btn-primary w-100" aria-current="page" th:text="#{search.income}">Search Income</a>
+                <a href="/admin/stats/incomes/search" class="btn btn-primary w-100" aria-current="page" th:text="#{search.income}">Search Income</a>
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
-                <a href="/admin/stats/expense" class="btn btn-danger w-100" aria-current="page" th:text="#{add.expense}">Add Expense</a>
+                <a href="/admin/stats/expenses" class="btn btn-danger w-100" aria-current="page" th:text="#{add.expense}">Add Expense</a>
             </div>
 
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
-                <a href="/admin/stats/expense/search" class="btn btn-primary w-100" aria-current="page" th:text="#{search.expense}">Search Expense</a>
+                <a href="/admin/stats/expenses/search" class="btn btn-primary w-100" aria-current="page" th:text="#{search.expense}">Search Expense</a>
             </div>
 
 
@@ -55,7 +55,7 @@
             <h4 th:text="#{search.transaction.for.period}">Search Transactions for period</h4>
         </div>
 
-        <form th:action="@{/admin/stats/transactions/search}" method="get" class="row g-3 mb-4">
+        <form th:action="@{/admin/stats/transactions/search}" method="post" class="row g-3 mb-4">
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
                 <label for="start" class="form-label" th:text="#{start.date}">Start Date:</label>
                 <input type="date" id="start" name="start" class="form-control" th:value="${start}" required>
@@ -91,7 +91,12 @@
                             <td th:text="${income.amount}">100.00</td>
                             <td>
 
-                                <a th:href="@{/admin/stats/income/edit/{id}(id=${income.id})}" class="btn btn-primary btn-sm" th:text="#{edit}">Edit</a>
+                                <form th:action="@{/admin/stats/income/edit/{id}(id=${income.id})}" method="post">
+                                    <input type="hidden" name="start" th:value="${start}" />
+                                    <input type="hidden" name="end" th:value="${end}" />
+                                    <button type="submit" class="btn btn-primary btn-sm"
+                                            th:text="#{edit}">Edit</button>
+                                </form>
 
                                 <form th:action="@{/admin/stats/income/delete/{id}(id=${income.id})}" method="post" style="display:inline;">
                                     <input type="hidden" name="start" th:value="${start}" />
@@ -130,7 +135,12 @@
                             <td th:text="${#temporals.format(expense.date, 'dd MMM yyyy', #locale)}">2024-01-01</td>
                             <td th:text="${expense.amount}">100.00</td>
                             <td>
-                                <a th:href="@{/admin/stats/expense/edit/{id}(id=${expense.id})}" class="btn btn-primary btn-sm" th:text="#{edit}">Edit</a>
+                                <form th:action="@{/admin/stats/expense/edit/{id}(id=${expense.id})}" method="post">
+                                    <input type="hidden" name="start" th:value="${start}" />
+                                    <input type="hidden" name="end" th:value="${end}" />
+                                    <button type="submit" class="btn btn-primary btn-sm"
+                                            th:text="#{edit}">Edit</button>
+                                </form>
 
                                 <form th:action="@{/admin/stats/expense/delete/{id}(id=${expense.id})}" method="post" style="display:inline;">
                                     <input type="hidden" name="start" th:value="${start}" />

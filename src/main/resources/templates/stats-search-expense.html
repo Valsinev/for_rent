@@ -39,7 +39,7 @@
 			<h4 th:text="#{search.expenses.by.name}">Search Expenses by Name</h4>
 		</div>
 
-		<form th:action="@{/admin/stats/expense/search}" method="post" class="row g-3 mb-4">
+		<form th:action="@{/admin/stats/expenses/search}" method="post" class="row g-3 mb-4">
 			<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
 				<label for="expenseName" class="form-label" th:text="#{expense.name}">Expense Name</label>
 				<input type="text" id="expenseName" name="expenseName" class="form-control" th:value="${expenseName}"
