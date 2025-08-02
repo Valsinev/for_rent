@@ -24,7 +24,7 @@
 
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
-				<a href="/admin/stats" class="btn btn-warning w-100" aria-current="page" th:text="#{return}">Return</a>
+				<a href="/admin/transactions" class="btn btn-warning w-100" aria-current="page" th:text="#{return}">Return</a>
 			</div>
 			<hr class="mt-5">
 
@@ -39,7 +39,7 @@
 			<h4 th:text="#{search.incomes.by.name}">Search Incomes by Name</h4>
 		</div>
 
-		<form th:action="@{/admin/stats/incomes/search}" method="post" class="row g-3 mb-4">
+		<form th:action="@{/admin/incomes/search}" method="post" class="row g-3 mb-4">
 			<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
 				<label for="incomeName" class="form-label" th:text="#{income.name}">Income Name</label>
 				<input type="text" id="incomeName" name="incomeName" class="form-control" th:value="${incomeName}"
@@ -71,19 +71,22 @@
 						<td th:text="${income.amount}">100.00</td>
 						<td>
 
-							<a th:href="@{/admin/stats/income/edit/{id}(id=${income.id})}"
-							   class="btn btn-primary btn-sm" th:text="#{edit}">Edit</a>
-
-							<form th:action="@{/admin/stats/income/delete/{id}(id=${income.id})}" method="post"
+							<form th:action="@{/admin/incomes/edit/{id}(id=${income.id})}" method="post"
 								  style="display:inline;">
-								<input type="hidden" name="start" th:value="${start}"/>
-								<input type="hidden" name="end" th:value="${end}"/>
+								<input type="hidden" name="incomeName" th:value="${incomeName}"/>
+								<button type="submit" class="btn btn-primary btn-sm"
+										th:text="#{edit}">Edit
+								</button>
+							</form>
+
+							<form th:action="@{/admin/incomes/delete/{id}(id=${income.id})}" method="post"
+								  style="display:inline;">
+								<input type="hidden" name="incomeName" th:value="${incomeName}"/>
 								<button type="submit" class="btn btn-danger btn-sm"
 										th:onclick="|return confirm('#{confirm.delete.income}');|"
 										th:text="#{delete}">Delete
 								</button>
 							</form>
-
 
 						</td>
 					</tr>

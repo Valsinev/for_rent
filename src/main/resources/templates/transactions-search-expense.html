@@ -24,7 +24,7 @@
 
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl mt-5">
-				<a href="/admin/stats" class="btn btn-warning w-100" aria-current="page" th:text="#{return}">Return</a>
+				<a href="/admin/transactions" class="btn btn-warning w-100" aria-current="page" th:text="#{return}">Return</a>
 			</div>
 			<hr class="mt-5">
 
@@ -39,7 +39,7 @@
 			<h4 th:text="#{search.expenses.by.name}">Search Expenses by Name</h4>
 		</div>
 
-		<form th:action="@{/admin/stats/expenses/search}" method="post" class="row g-3 mb-4">
+		<form th:action="@{/admin/expenses/search}" method="post" class="row g-3 mb-4">
 			<div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl">
 				<label for="expenseName" class="form-label" th:text="#{expense.name}">Expense Name</label>
 				<input type="text" id="expenseName" name="expenseName" class="form-control" th:value="${expenseName}"
@@ -71,13 +71,17 @@
 						<td th:text="${#temporals.format(expense.date, 'dd MMM yyyy', #locale)}">2024-01-01</td>
 						<td th:text="${expense.amount}">100.00</td>
 						<td>
-							<a th:href="@{/admin/stats/expense/edit/{id}(id=${expense.id})}"
-							   class="btn btn-primary btn-sm" th:text="#{edit}">Edit</a>
 
-							<form th:action="@{/admin/stats/expense/delete/{id}(id=${expense.id})}" method="post"
+							<form th:action="@{/admin/expenses/edit/{id}(id=${expense.id})}" method="post"
 								  style="display:inline;">
-								<input type="hidden" name="start" th:value="${start}"/>
-								<input type="hidden" name="end" th:value="${end}"/>
+								<input type="hidden" name="expenseName" th:value="${expenseName}"/>
+								<button type="submit" class="btn btn-primary btn-sm"
+										th:text="#{edit}">Edit
+								</button>
+							</form>
+							<form th:action="@{/admin/expenses/delete/{id}(id=${expense.id})}" method="post"
+								  style="display:inline;">
+								<input type="hidden" name="expenseName" th:value="${expenseName}"/>
 								<button type="submit"
 										class="btn btn-danger btn-sm"
 										th:onclick="|return confirm('#{confirm.delete.expense}');|"

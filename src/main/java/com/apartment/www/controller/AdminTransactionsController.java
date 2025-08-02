@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Controller
-@RequestMapping("/admin/stats")
+@RequestMapping("/admin/transactions")
 public class AdminTransactionsController {
 
     private final IncomeService incomeService;
@@ -58,13 +58,80 @@ public class AdminTransactionsController {
             model.addAttribute("isSearched", false);
         }
 
-        return "stats.html";
+        return "transactions";
+    }
+
+
+    @GetMapping("/income")
+    public String getCreateIncomeForm(Model model) {
+
+        if (!model.containsAttribute("incomeDto")) {
+            model.addAttribute("incomeDto", new IncomeDto());
+        }
+        if (!model.containsAttribute("start")) {
+            model.addAttribute("start", LocalDate.now());
+        }
+        if (!model.containsAttribute("end")) {
+            model.addAttribute("end", LocalDate.now());
+        }
+        return "transactions-add-income";
+    }
+
+
+    @GetMapping("/expense")
+    public String getCreateExpenseForm(Model model) {
+
+        if (!model.containsAttribute("expenseDto")) {
+            model.addAttribute("expenseDto", new IncomeDto());
+        }
+        if (!model.containsAttribute("start")) {
+            model.addAttribute("start", LocalDate.now());
+        }
+        if (!model.containsAttribute("end")) {
+            model.addAttribute("end", LocalDate.now());
+        }
+        return "transactions-add-expense";
+    }
+
+    @PostMapping("/addIncome")
+    public String saveIncome(@Valid @ModelAttribute IncomeDto incomeDto,
+                             BindingResult bindingResult,
+                             @RequestParam("start") LocalDate start,
+                             @RequestParam("end") LocalDate end,
+                             RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("incomeDto", incomeDto);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.incomeDto", bindingResult);
+            return "redirect:/admin/transactions/search?start=" + start + "&end=" + end;
+        }
+
+
+        incomeService.save(incomeDto);
+        return "redirect:/admin/transactions/search?start=" + start + "&end=" + end;
+
+    }
+
+    @PostMapping("/addExpense")
+    public String saveExpense(@Valid @ModelAttribute ExpenseDto expenseDto,
+                              BindingResult bindingResult,
+                              @RequestParam("start") LocalDate start,
+                              @RequestParam("end") LocalDate end,
+                              RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("expenseDto", expenseDto);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.incomeDto", bindingResult);
+            return "redirect:/admin/transactions/search?start=" + start + "&end=" + end;
+        }
+
+        expenseService.save(expenseDto);
+        return "redirect:/admin/transactions/search?start=" + start + "&end=" + end;
     }
 
 
 
-
-    @PostMapping("/transactions/search")
+    @PostMapping("/search")
     public String findIncomesAndExpensesBetweenDate(@RequestParam("start") LocalDate start,
                                                     @RequestParam("end") LocalDate end,
                                                     RedirectAttributes redirectAttributes) {
@@ -85,10 +152,10 @@ public class AdminTransactionsController {
         redirectAttributes.addFlashAttribute("start", start);
         redirectAttributes.addFlashAttribute("end", end);
         redirectAttributes.addFlashAttribute("isSearched", true);
-        return "redirect:/admin/stats";
+        return "redirect:/admin/transactions";
     }
 
-    @GetMapping("/transactions/search")
+    @GetMapping("/search")
     public String findIncomesAndExpensesBetweenDateForGetMapping(@RequestParam("start") LocalDate start,
                                                     @RequestParam("end") LocalDate end,
                                                     RedirectAttributes redirectAttributes) {
@@ -109,75 +176,7 @@ public class AdminTransactionsController {
         redirectAttributes.addFlashAttribute("start", start);
         redirectAttributes.addFlashAttribute("end", end);
         redirectAttributes.addFlashAttribute("isSearched", true);
-        return "redirect:/admin/stats";
-    }
-
-    @GetMapping("/income")
-    public String getEditIncomeForm(Model model) {
-
-        if (!model.containsAttribute("incomeDto")) {
-            model.addAttribute("incomeDto", new IncomeDto());
-        }
-        if (!model.containsAttribute("start")) {
-            model.addAttribute("start", LocalDate.now());
-        }
-        if (!model.containsAttribute("end")) {
-            model.addAttribute("end", LocalDate.now());
-        }
-        return "edit-income.html";
-    }
-
-
-    @GetMapping("/expense")
-    public String getEditExpenseForm(Model model) {
-
-        if (!model.containsAttribute("expenseDto")) {
-            model.addAttribute("expenseDto", new IncomeDto());
-        }
-        if (!model.containsAttribute("start")) {
-            model.addAttribute("start", LocalDate.now());
-        }
-        if (!model.containsAttribute("end")) {
-            model.addAttribute("end", LocalDate.now());
-        }
-        return "edit-expense.html";
-    }
-
-
-    @PostMapping("/addIncome")
-    public String saveIncome(@Valid @ModelAttribute IncomeDto incomeDto,
-                             BindingResult bindingResult,
-                             @RequestParam("start") LocalDate start,
-                             @RequestParam("end") LocalDate end,
-                             RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("incomeDto", incomeDto);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.incomeDto", bindingResult);
-            return "redirect:/admin/stats/transactions/search?start=" + start + "&end=" + end;
-        }
-
-
-        incomeService.save(incomeDto);
-        return "redirect:/admin/stats/transactions/search?start=" + start + "&end=" + end;
-
-    }
-
-    @PostMapping("/addExpense")
-    public String saveExpense(@Valid @ModelAttribute ExpenseDto expenseDto,
-                             BindingResult bindingResult,
-                             @RequestParam("start") LocalDate start,
-                             @RequestParam("end") LocalDate end,
-                             RedirectAttributes redirectAttributes) {
-
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("expenseDto", expenseDto);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.incomeDto", bindingResult);
-            return "redirect:/admin/stats/transactions/search?start=" + start + "&end=" + end;
-        }
-
-        expenseService.save(expenseDto);
-        return "redirect:/admin/stats/transactions/search?start=" + start + "&end=" + end;
+        return "redirect:/admin/transactions";
     }
 
 
@@ -191,7 +190,7 @@ public class AdminTransactionsController {
         redirectAttributes.addFlashAttribute("start", start);
         redirectAttributes.addFlashAttribute("end", end);
         redirectAttributes.addFlashAttribute("incomeDto", incomeDto);
-        return "redirect:/admin/stats/income";
+        return "redirect:/admin/transactions/income";
 
     }
 
@@ -205,7 +204,7 @@ public class AdminTransactionsController {
         redirectAttributes.addFlashAttribute("start", start);
         redirectAttributes.addFlashAttribute("end", end);
         redirectAttributes.addFlashAttribute("expenseDto", expenseDto);
-        return "redirect:/admin/stats/expense";
+        return "redirect:/admin/transactions/expense";
     }
 
     @PostMapping("/income/delete/{id}")
@@ -214,7 +213,7 @@ public class AdminTransactionsController {
                                @RequestParam("end") LocalDate end) {
 
         incomeService.deleteById(id);
-        return "redirect:/admin/stats/transactions/search?start=" + start + "&end=" + end;
+        return "redirect:/admin/transactions/search?start=" + start + "&end=" + end;
     }
 
 
@@ -224,7 +223,7 @@ public class AdminTransactionsController {
                                 @RequestParam("end") String end) {
 
         expenseService.deleteById(id);
-        return "redirect:/admin/stats/transactions/search?start=" + start + "&end=" + end;
+        return "redirect:/admin/transactions/search?start=" + start + "&end=" + end;
     }
 
 

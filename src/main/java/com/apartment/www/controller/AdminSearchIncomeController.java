@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/stats/incomes")
+@RequestMapping("/admin/incomes")
 public class AdminSearchIncomeController {
 
 	private final IncomeService incomeService;
@@ -26,48 +26,7 @@ public class AdminSearchIncomeController {
 
 
 	@GetMapping
-	public String getAddIncomeForm(Model model) {
-		if (!model.containsAttribute("incomeDto")) {
-			model.addAttribute("incomeDto", new IncomeDto());
-		}
-		return "add-income.html";
-	}
-
-
-	@PostMapping("/addIncome")
-	public String saveIncome(@Valid @ModelAttribute IncomeDto incomeDto,
-	                         BindingResult bindingResult,
-	                         @RequestParam("start") String start,
-	                         @RequestParam("end") String end,
-	                         RedirectAttributes redirectAttributes) {
-
-		if (bindingResult.hasErrors()) {
-			redirectAttributes.addFlashAttribute("incomeDto", incomeDto);
-			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.incomeDto", bindingResult);
-			redirectAttributes.addFlashAttribute("start", start);
-			redirectAttributes.addFlashAttribute("end", end);
-			return "redirect:/admin/stats/incomes";
-		}
-
-		redirectAttributes.addFlashAttribute("start", start);
-		redirectAttributes.addFlashAttribute("end", end);
-
-		incomeService.save(incomeDto);
-		return "redirect:/admin/stats";
-	}
-
-
-	@GetMapping("/edit/{id}")
-	public String editIncome(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-
-		IncomeDto incomeDto = incomeService.findById(id);
-		redirectAttributes.addFlashAttribute("incomeDto", incomeDto);
-		return "redirect:/admin/stats/incomes";
-	}
-
-
-	@GetMapping("/search")
-	public String getIncomeSearchPage(Model model) {
+	public String getIncomesPage(Model model) {
 
 		if (!model.containsAttribute("incomes")) {
 			model.addAttribute("incomes", List.of());
@@ -75,12 +34,56 @@ public class AdminSearchIncomeController {
 		if (!model.containsAttribute("totalIncomes")) {
 			model.addAttribute("totalIncomes", BigDecimal.ZERO);
 		}
-		return "stats-search-income";
+		if (!model.containsAttribute("incomeName")) {
+			model.addAttribute("incomeName", "");
+		}
+		return "transactions-search-income";
 	}
 
-	@PostMapping("/search")
-	public String searchIncomesByName(@RequestParam("incomeName") String incomeName,
-	                                  RedirectAttributes redirectAttributes) {
+	@PostMapping("/addIncome")
+	public String saveIncome(@Valid @ModelAttribute IncomeDto incomeDto,
+	                         BindingResult bindingResult,
+	                         @RequestParam("incomeName") String incomeName,
+	                         RedirectAttributes redirectAttributes) {
+
+		if (bindingResult.hasErrors()) {
+			redirectAttributes.addFlashAttribute("incomeDto", incomeDto);
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.incomeDto", bindingResult);
+			return "redirect:/admin/incomes/search?incomeName=" + incomeName;
+		}
+
+
+		incomeService.save(incomeDto);
+		return "redirect:/admin/incomes/search?incomeName=" + incomeName;
+
+	}
+
+	@GetMapping("/edit")
+	public String getEditIncomeForm(Model model) {
+
+		if (!model.containsAttribute("incomeDto")) {
+			model.addAttribute("incomeDto", new IncomeDto());
+		}
+		if (!model.containsAttribute("incomeName")) {
+			model.addAttribute("incomeName", "");
+		}
+		return "incomes-search-edit";
+	}
+
+	@PostMapping("/edit/{id}")
+	public String editIncome(@PathVariable Long id,
+	                         @RequestParam("incomeName") String incomeName,
+	                         RedirectAttributes redirectAttributes) {
+
+		IncomeDto incomeDto = incomeService.findById(id);
+		redirectAttributes.addFlashAttribute("incomeDto", incomeDto);
+		redirectAttributes.addFlashAttribute("incomeName", incomeName);
+		return "redirect:/admin/incomes/edit";
+	}
+
+	@GetMapping("/search")
+	public String searchIncomesByNameGetMapping(@RequestParam("incomeName") String incomeName,
+	                                            RedirectAttributes redirectAttributes) {
 
 		List<IncomeDto> allByName = incomeService.findAllByNameContaining(incomeName);
 
@@ -89,25 +92,47 @@ public class AdminSearchIncomeController {
 
 		if (allByName == null || allByName.isEmpty()) {
 			redirectAttributes.addFlashAttribute("incomeName", incomeName);
-			return "redirect:/admin/stats/incomes/search";
+			return "redirect:/admin/incomes";
 		}
 
 		redirectAttributes.addFlashAttribute("incomeName", incomeName);
 		redirectAttributes.addFlashAttribute("incomes", allByName);
 		redirectAttributes.addFlashAttribute("totalIncomes", totalIncomes);
 
-		return "redirect:/admin/stats/incomes/search";
+		return "redirect:/admin/incomes";
+	}
+
+
+	@PostMapping("/search")
+	public String searchIncomesByName(@RequestParam("incomeName") String incomeName,
+	                                  RedirectAttributes redirectAttributes) {
+
+
+
+		List<IncomeDto> allByName = incomeService.findAllByNameContaining(incomeName);
+
+		//summ the amount of all
+		BigDecimal totalIncomes = incomeService.findAllAmountByNameContaining(incomeName);
+
+		if (allByName == null || allByName.isEmpty() || incomeName.isBlank()) {
+			redirectAttributes.addFlashAttribute("incomeName", incomeName);
+			return "redirect:/admin/incomes";
+		}
+
+		redirectAttributes.addFlashAttribute("incomeName", incomeName);
+		redirectAttributes.addFlashAttribute("incomes", allByName);
+		redirectAttributes.addFlashAttribute("totalIncomes", totalIncomes);
+
+		return "redirect:/admin/incomes";
 	}
 
 
 	@PostMapping("/delete/{id}")
 	public String deleteIncome(@PathVariable Long id,
-	                           @RequestParam("start") String start,
-	                           @RequestParam("end") String end,
+	                           @RequestParam("incomeName") String incomeName,
 	                           RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("incomeName", incomeName);
 		incomeService.deleteById(id);
-		redirectAttributes.addFlashAttribute("start", start);
-		redirectAttributes.addFlashAttribute("end", end);
-		return "redirect:/admin/stats/incomes";
+		return "redirect:/admin/incomes";
 	}
 }
