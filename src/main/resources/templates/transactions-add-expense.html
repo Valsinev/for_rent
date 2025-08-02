@@ -47,12 +47,12 @@
     </div>
 
     <button type="submit" class="btn btn-success" th:text="#{save}">Save</button>
+</form>
 
-    <form th:action="@{/admin/transactions/search}" method="post">
-        <input type="hidden" name="start" th:value="${start}" />
-        <input type="hidden" name="end" th:value="${end}" />
-        <button type="submit" class="btn btn-warning" th:text="#{return}">Return</button>
-    </form>
+<form th:action="@{/admin/transactions/search}" class="mt-4" method="post">
+    <input type="hidden" name="start" th:value="${start}" />
+    <input type="hidden" name="end" th:value="${end}" />
+    <button type="submit" class="btn btn-warning" th:text="#{return}">Return</button>
 </form>
 
 </body>
